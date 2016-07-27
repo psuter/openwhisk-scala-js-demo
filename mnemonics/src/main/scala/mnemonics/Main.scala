@@ -6,28 +6,23 @@ import scala.util.{ Try, Success, Failure }
 
 import scala.scalajs.js
 import scala.scalajs.js.DynamicImplicits._
+import scala.scalajs.js.JSConverters._
 import scala.scalajs.js.annotation._
 import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 
 @JSExport
 object Main {
   @JSExport
-  def main(input: js.Dictionary[js.Any]) : Unit = {
-    val require = input("require").asInstanceOf[js.Dynamic]
-    val resolve = input("resolve").asInstanceOf[js.Function1[js.Any,Unit]]
-    val reject  = input("reject").asInstanceOf[js.Function1[js.Any,Unit]]
-    val args    = input("args").asInstanceOf[js.Dictionary[js.Any]]
-
-    val number = args("number").toString
-
+  def main(require: js.Dynamic, args: js.Dictionary[js.Any]) : js.Promise[js.Any] = {
     loadWords(require) map { wordList =>
+      val number = args("number").toString
       val coder = new Coder(wordList)
       val results = coder.translate(number).toSeq
-      resolve(js.Dictionary("phrases" -> js.Array(results : _*)))
+      js.Dictionary("phrases" -> js.Array(results : _*))
     } recover {
       case failure =>
-        reject(js.Dictionary("error" -> failure.getMessage))
-    }
+        js.Dictionary("error" -> failure.getMessage)
+    } toJSPromise
   }
 
   private def loadWords(require: js.Dynamic) : Future[List[String]] = {

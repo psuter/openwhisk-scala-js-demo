@@ -9,13 +9,6 @@ scalaJSUseRhino in Global := false
 scalaJSOutputWrapper := ("", """
 // OpenWhisk action entrypoint
 function main(args) {
-  return new Promise(function (resolve, reject) {
-    mnemonics.Main().main({
-      "require" : require,
-      "resolve" : resolve,
-      "reject"  : reject,
-      "args"    : args
-    });
-  });
+  return mnemonics.Main().main(require, args);
 }
 """.stripMargin)
