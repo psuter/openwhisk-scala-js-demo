@@ -3,6 +3,7 @@ package mnemonics
 import scala.concurrent.Future
 import scala.concurrent.Promise
 import scala.util.{ Try, Success, Failure }
+import scala.language.postfixOps
 
 import scala.scalajs.js
 import scala.scalajs.js.DynamicImplicits._

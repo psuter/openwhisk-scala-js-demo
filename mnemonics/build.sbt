@@ -4,6 +4,8 @@ name := "whisk-mnemonics"
 
 scalaVersion := "2.11.8"
 
+scalacOptions := Seq("-unchecked", "-deprecation", "-feature")
+
 scalaJSUseRhino in Global := false
 
 scalaJSOutputWrapper := ("", """
